@@ -1,5 +1,5 @@
 package com.example.Course_Note_Taking.helper;
-
+// Ref: https://www.tutlane.com/tutorial/android/android-listview-with-examples
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
