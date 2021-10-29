@@ -5,9 +5,13 @@ import java.util.Date;
 
 public class Note {
 
+
+
     private String noteName;
     private LocalDateTime dateEdited;
     private String content;
+
+
 
     public String getNoteName() {
         return noteName;

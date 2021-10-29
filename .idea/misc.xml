@@ -4,7 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout/activity_home_screen.xml" value="0.24427083333333333" />
+        <entry key="app/src/main/res/layout/activity_note_editing.xml" value="0.18432190618898528" />
         <entry key="app/src/main/res/layout/activity_note_lists.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_note_writing.xml" value="0.1" />
         <entry key="app/src/main/res/layout/list_row.xml" value="0.25" />
       </map>
     </option>
