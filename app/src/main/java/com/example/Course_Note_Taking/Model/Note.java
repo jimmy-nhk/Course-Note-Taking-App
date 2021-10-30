@@ -59,7 +59,7 @@ public class Note implements Serializable , Comparable {
     public int compareTo(Object o) {
         Note note = (Note) o;
 
-        return this.dateEdited.compareTo(note.getDateEdited());
+        return this.dateEdited.compareTo(note.getDateEdited()) * (-1);
     }
 }
 

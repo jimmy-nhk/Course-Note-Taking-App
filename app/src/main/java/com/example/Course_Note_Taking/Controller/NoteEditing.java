@@ -1,3 +1,4 @@
+/**https://stackoverflow.com/questions/4118751/how-do-i-serialize-an-object-and-save-it-to-a-file-in-android*/
 package com.example.Course_Note_Taking.Controller;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,14 @@ import com.example.Course_Note_Taking.Model.Note;
 import com.example.Course_Note_Taking.R;
 import com.example.Course_Note_Taking.helper.CustomListAdapter;
 
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.RandomAccessFile;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -27,6 +36,7 @@ public class NoteEditing extends AppCompatActivity {
     EditText titleText, mainNoteText;
     Note note;
     String titleBeforeChanged, titleAfterChanged;
+    Course course;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,14 +73,15 @@ public class NoteEditing extends AppCompatActivity {
         backListBtn = findViewById(R.id.backToListBtn);
 
         // Create the course
-        Course course = new Course(courseName);
+        course = new Course(courseName);
 
+        readFiles();
 
         // Check the scenario which addBtn is pressed
 
         try {
             String booleanValue = intent.getExtras().get("newNote").toString();
-            boolean checked = booleanValue.equals("true");
+
 
             note = new Note();
 
@@ -93,6 +104,14 @@ public class NoteEditing extends AppCompatActivity {
                     course.getNoteList().add(note);
                     //TODO: write note1 to object
 
+                    try {
+                        writeFiles();
+                    } catch (IOException exception) {
+                        exception.printStackTrace();
+                    }
+
+                    Intent intent1 = new Intent(NoteEditing.this, NoteListDisplay.class);
+                    setResult(RESULT_OK , intent1);
                     finish();
                 }
             });
@@ -117,15 +136,89 @@ public class NoteEditing extends AppCompatActivity {
                     note.setContent(mainNoteText.getText().toString());
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        Toast.makeText(NoteEditing.this, "Set current time successfully.", Toast.LENGTH_LONG).show();
                         note.setDateEdited(LocalDateTime.now());
                     }
-                    //TODO: write note1 to object
 
+                    try {
+                        writeFiles();
+                    } catch (IOException exception) {
+                        exception.printStackTrace();
+                    }
+
+                    Intent intent1 = new Intent(NoteEditing.this, NoteListDisplay.class);
+                    intent1.putExtra("noteTitle" ,titleText.getText().toString() );
+                    intent1.putExtra("noteContent" , mainNoteText.getText().toString());
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        intent1.putExtra("dateEdited", LocalDateTime.now());
+                    }
+                    setResult(RESULT_OK , intent1);
                     finish();
                 }
 
 
             });
         }
+    }
+
+    // read files
+    public void readFiles(){
+        try {
+            /* We have to use the openFileInput()-method
+             * the ActivityContext provides.
+             * Again for security reasons with
+             * openFileInput(...) */
+
+            FileInputStream fIn = openFileInput("test.ser" );
+            ObjectInputStream isr = new ObjectInputStream(fIn);
+
+
+
+            // Fill the Buffer with data from the file
+            course = (Course) isr.readObject();
+            isr.close();
+            fIn.close();
+
+
+        } catch (IOException | ClassNotFoundException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+
+    public void writeFiles() throws IOException {
+
+        try {
+            /* We have to use the openFileOutput()-method
+             * the ActivityContext provides, to
+             * protect your file from others and
+             * This is done for security-reasons.
+             * We chose MODE_WORLD_READABLE, because
+             *  we have nothing to hide in our file */
+            FileOutputStream fOut = openFileOutput("test.ser",
+                    MODE_PRIVATE);
+            ObjectOutputStream osw ;
+
+//            BufferedOutputStream osw = new BufferedOutputStream(fOut));
+
+            RandomAccessFile raf = new RandomAccessFile("test.ser", "rw");
+            FileOutputStream fos = new FileOutputStream(raf.getFD());
+            osw = new ObjectOutputStream(fos);
+
+
+            // Write the string to the file
+            osw.writeObject(course);
+
+            wait(1000000);
+            /* ensure that everything is
+             * really written out and close */
+            osw.flush();
+            osw.close();
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }

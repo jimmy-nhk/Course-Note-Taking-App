@@ -1,5 +1,7 @@
 package com.example.Course_Note_Taking.Model;
 
+import static android.content.Context.MODE_PRIVATE;
+import android.content.Context;
 import android.os.Build;
 
 import java.io.BufferedOutputStream;
@@ -10,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,27 +28,16 @@ public class Course implements Serializable {
         this.courseName = courseName;
         this.noteList = new ArrayList<>();
 
-        populateDataBasedOnCourse(courseName);
+
+//        populateDataBasedOnCourse(courseName);
 
     }
 
-//    public static void writeFiles() throws IOException {
-//        String fileName = "course.txt";
-//        String value = "Hello";
-//        FileOutputStream fos = new FileOutputStream(fileName);
-//        DataOutputStream outStream = new DataOutputStream(new BufferedOutputStream(fos));
-//        outStream.writeUTF(value);
-//        outStream.close();
-//
-//        // verify the results
-//        String result;
-//        FileInputStream fis = new FileInputStream(fileName);
-//        DataInputStream reader = new DataInputStream(fis);
-//        result = reader.readUTF();
-//        reader.close();
-//
-////        assertEquals(value, result);
-//    }
+    public static ArrayList<Note> sortList(ArrayList<Note> noteList){
+        Collections.sort(noteList);
+        return noteList;
+    }
+
 
     // Check note title exists
     public Note getNoteBasedOnTitle(String noteTitle){
@@ -93,7 +85,7 @@ public class Course implements Serializable {
                 noteList.add(note1);
             }
 
-//            Collections.sort(noteList);
+
             return;
         }
         else if (courseName.equals("ARCHITECTURE AND DESIGN")){
