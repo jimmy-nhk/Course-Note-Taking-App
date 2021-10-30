@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,6 +24,9 @@ import java.util.ArrayList;
 public class NoteEditing extends AppCompatActivity {
 
     Button backListBtn;
+    EditText titleText, mainNoteText;
+    Note note;
+    String titleBeforeChanged, titleAfterChanged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,25 +38,94 @@ public class NoteEditing extends AppCompatActivity {
 
         String courseName = intent.getExtras().get("courseName").toString();
 
-        // Create the course
-        Course course = new Course(courseName);
-        Note note = course.getNoteBasedOnTitle(noteTitle);
+        titleText = findViewById(R.id.titleText);
+        titleText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        Toast.makeText(NoteEditing.this, "" + note.getNoteName(), Toast.LENGTH_LONG).show();
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                titleAfterChanged = s.toString();
+                Toast.makeText(NoteEditing.this, titleAfterChanged, Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        mainNoteText = findViewById(R.id.noteMainText);
 
         // Set the back button
         backListBtn = findViewById(R.id.backToListBtn);
-        backListBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                //TODO: Needs to implement saving the note
-                Intent intent1 = new Intent(NoteEditing.this , NoteListDisplay.class);
+        // Create the course
+        Course course = new Course(courseName);
 
-                setResult(RESULT_OK , intent1);
-                finish();
-            }
-        });
+
+        // Check the scenario which addBtn is pressed
+
+        try {
+            String booleanValue = intent.getExtras().get("newNote").toString();
+            boolean checked = booleanValue.equals("true");
+
+            note = new Note();
+
+            backListBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (course.checkNoteTitleExists(titleText.getText().toString())) {
+                        Toast.makeText(NoteEditing.this, "This note title is already existed.\nPlease choose another one.", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    note.setNoteName(titleText.getText().toString());
+                    note.setContent(mainNoteText.getText().toString());
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        note.setDateEdited(LocalDateTime.now());
+                    }
+
+                    course.getNoteList().add(note);
+                    //TODO: write note1 to object
+
+                    finish();
+                }
+            });
+        } catch (Exception e) {
+
+            note = course.getNoteBasedOnTitle(noteTitle);
+            titleText.setText(note.getNoteName());
+            mainNoteText.setText(note.getContent());
+
+            backListBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (note.getNoteName().compareTo(titleAfterChanged) != 0)
+
+                        if (course.checkNoteTitleExists(titleText.getText().toString())) {
+                            Toast.makeText(NoteEditing.this, "This note title is already existed.\nPlease choose another one.", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                    note.setNoteName(titleText.getText().toString());
+                    note.setContent(mainNoteText.getText().toString());
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        note.setDateEdited(LocalDateTime.now());
+                    }
+                    //TODO: write note1 to object
+
+                    finish();
+                }
+
+
+            });
+        }
     }
 }

@@ -2,10 +2,21 @@ package com.example.Course_Note_Taking.Model;
 
 import android.os.Build;
 
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
-public class Course {
+public class Course implements Serializable {
 
     private String courseName;
     private ArrayList<Note> noteList;
@@ -18,14 +29,37 @@ public class Course {
 
     }
 
+//    public static void writeFiles() throws IOException {
+//        String fileName = "course.txt";
+//        String value = "Hello";
+//        FileOutputStream fos = new FileOutputStream(fileName);
+//        DataOutputStream outStream = new DataOutputStream(new BufferedOutputStream(fos));
+//        outStream.writeUTF(value);
+//        outStream.close();
+//
+//        // verify the results
+//        String result;
+//        FileInputStream fis = new FileInputStream(fileName);
+//        DataInputStream reader = new DataInputStream(fis);
+//        result = reader.readUTF();
+//        reader.close();
+//
+////        assertEquals(value, result);
+//    }
+
     // Check note title exists
     public Note getNoteBasedOnTitle(String noteTitle){
 
-        for (Note note: noteList){
+        try{
+            for (Note note: noteList){
 
-            if (noteTitle.equals(note.getNoteName())){
-                return note;
+                if (noteTitle.equals(note.getNoteName())){
+                    return note;
+                }
             }
+
+        } catch (Exception e){
+            e.printStackTrace();
         }
         return null;
     }
@@ -59,6 +93,7 @@ public class Course {
                 noteList.add(note1);
             }
 
+//            Collections.sort(noteList);
             return;
         }
         else if (courseName.equals("ARCHITECTURE AND DESIGN")){
@@ -103,4 +138,5 @@ public class Course {
         this.noteList = noteList;
     }
 }
+
 

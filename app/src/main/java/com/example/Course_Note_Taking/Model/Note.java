@@ -1,9 +1,14 @@
 package com.example.Course_Note_Taking.Model;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-public class Note {
+public class Note implements Serializable , Comparable {
 
 
 
@@ -46,4 +51,15 @@ public class Note {
                 ", content='" + content + '\'' +
                 '}';
     }
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public int compareTo(Object o) {
+        Note note = (Note) o;
+
+        return this.dateEdited.compareTo(note.getDateEdited());
+    }
 }
+

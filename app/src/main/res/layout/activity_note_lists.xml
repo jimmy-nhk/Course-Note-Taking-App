@@ -11,15 +11,46 @@
     tools:context=".Controller.NoteListDisplay">
 
 
-    <Button
-        android:id="@+id/backBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
         android:layout_weight="1"
-        android:backgroundTint="#3d3d5c"
-        android:text="Back"
-        android:textSize="15dp"
-        android:textStyle="bold" />
+        android:weightSum="10"
+        app:barrierDirection="top">
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="150sp"
+            android:layout_height="80dp"
+            android:layout_weight="2"
+            android:backgroundTint="#3d3d5c"
+            android:insetTop="14dp"
+            android:text="Back"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="6" />
+
+        <Button
+            android:id="@+id/addBtn"
+            android:layout_width="150dp"
+            android:layout_height="80dp"
+            android:layout_weight="2"
+            android:backgroundTint="#3d3d5c"
+            android:insetTop="3dp"
+            android:paddingTop="0dp"
+            android:text="Add Note"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
 
     <TextView
         android:id="@+id/courseDisplay"
@@ -27,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Android"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:textStyle="bold"
         android:textAlignment="center"
         android:layout_gravity="center"/>
@@ -42,3 +73,4 @@
 
 
 </LinearLayout>
+

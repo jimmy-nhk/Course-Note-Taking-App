@@ -35,7 +35,7 @@ public class HomeScreen extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(HomeScreen.this , NoteListDisplay.class);
                 intent.putExtra("course" , "ANDROID");
-                startActivityForResult(intent , 100);
+                startActivity(intent );
 
             }
         });
@@ -49,7 +49,7 @@ public class HomeScreen extends AppCompatActivity {
                 Intent intent = new Intent(HomeScreen.this , NoteListDisplay.class);
                 intent.putExtra("course" , "ARCHITECTURE AND DESIGN");
 
-                startActivityForResult(intent , 100);
+                startActivity(intent);
             }
         });
 
@@ -69,3 +69,4 @@ public class HomeScreen extends AppCompatActivity {
 
 
 }
+

@@ -17,7 +17,7 @@
         android:text="Back" />
 
     <EditText
-        android:id="@+id/shortTextNote"
+        android:id="@+id/titleText"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_weight="1"
