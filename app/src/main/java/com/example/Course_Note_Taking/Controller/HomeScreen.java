@@ -18,18 +18,17 @@ import java.util.ArrayList;
 
 public class HomeScreen extends AppCompatActivity {
 
-    Button buttonAndroid, buttonArchitecture , buttonEngineering;
+    private Button buttonAndroid, buttonArchitecture , buttonEngineering;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_home_screen);
 
 
         buttonAndroid = findViewById(R.id.androidBtn);
 
+        //Set event handler
         buttonAndroid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,6 +42,7 @@ public class HomeScreen extends AppCompatActivity {
 
         buttonArchitecture = findViewById(R.id.architectureBtn);
 
+        //Set event handler
         buttonArchitecture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,13 +56,14 @@ public class HomeScreen extends AppCompatActivity {
 
         buttonEngineering = findViewById(R.id.engineerDesignBtn);
 
+        //Set event handler
         buttonEngineering.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomeScreen.this , NoteListDisplay.class);
                 intent.putExtra("course" , "ENGINEERING DESIGN 3");
 
-                startActivityForResult(intent , 100);
+                startActivity(intent );
             }
         });
     }

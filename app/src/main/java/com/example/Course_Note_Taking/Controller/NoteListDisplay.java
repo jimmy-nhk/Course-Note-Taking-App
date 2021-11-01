@@ -33,10 +33,11 @@ import java.util.Date;
 
 public class NoteListDisplay extends AppCompatActivity {
 
-    TextView courseText ;
-    String courseName;
-    Button backBtn ,addNoteBtn;
-    Course course;
+    private TextView courseText ;
+    private String courseName;
+    private Button backBtn ,addNoteBtn;
+    private Course course;
+    private final int SENDING_CODE_FROM_NOTE_LIST = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +55,8 @@ public class NoteListDisplay extends AppCompatActivity {
         // Create the course
         course = new Course(courseName);
 
-        readFiles();
-
         // Load the data based on the course
-
+        readFiles();
 
         final ListView lv = (ListView) findViewById(R.id.note_list);
         lv.setAdapter(new CustomListAdapter(this, Course.sortList(course.getNoteList()) , this , courseName));
@@ -69,9 +68,6 @@ public class NoteListDisplay extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-//                Intent intent1 = new Intent(NoteListDisplay.this , HomeScreen.class);
-//
-//                setResult(RESULT_OK , intent1);
                 finish();
             }
         });
@@ -88,7 +84,7 @@ public class NoteListDisplay extends AppCompatActivity {
                 intent1.putExtra("courseName" , courseName);
                 intent1.putExtra("newNote" , "true");
 
-                startActivityForResult(intent1 , 100);
+                startActivityForResult(intent1 , SENDING_CODE_FROM_NOTE_LIST);
             }
         });
 
@@ -97,19 +93,27 @@ public class NoteListDisplay extends AppCompatActivity {
     // read files
     public void readFiles(){
         try {
-            /* We have to use the openFileInput()-method
-             * the ActivityContext provides.
-             * Again for security reasons with
-             * openFileInput(...) */
 
-            FileInputStream fIn = openFileInput("test.ser");
+            // scan the file name
+            String fileName;
+            switch (courseName){
+                case "ANDROID":
+                    fileName = "android.ser";
+                    break;
+                case "ARCHITECTURE AND DESIGN":
+                    fileName = "architecture.ser";
+                    break;
+                default:
+                    fileName = "engineering.ser";
+
+            }
+
+            // Open file
+            FileInputStream fIn = openFileInput(fileName);
             ObjectInputStream isr = new ObjectInputStream(fIn);
 
-            /* Prepare a char-Array that will
-             * hold the chars we read back in. */
 
-
-            // Fill the Buffer with data from the file
+            // Write to the object
             course = (Course) isr.readObject();
             isr.close();
             fIn.close();
@@ -120,40 +124,23 @@ public class NoteListDisplay extends AppCompatActivity {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 100){
+        // Check the request code
+        if(requestCode == SENDING_CODE_FROM_NOTE_LIST){
 
+            // check the result code
             if (resultCode == RESULT_OK){
-//                course = new Course(courseName);
-//
-//                for (int i = 0 ; i < 10 ; i++){
-//                    readFiles();
-//                }
+                course = new Course(courseName);
 
-                // TEST
-                String noteTitle =  data.getExtras().get("noteTitle").toString();
-                String noteContent =  data.getExtras().get("noteContent").toString();
-                LocalDateTime time = (LocalDateTime) data.getExtras().get("dateEdited");
-                Note note = new Note();
-                note.setNoteName(noteTitle);
-                note.setContent(noteContent);
-                note.setDateEdited(time);
-                course.getNoteList().add(note);
-
-                try {
-                    writeFiles();
-                    wait(1000);
-                } catch (IOException | InterruptedException exception) {
-                    exception.printStackTrace();
-                }
 
                 // Load the data based on the course
                 readFiles();
 
+                // update the list
                 final ListView lv =  findViewById(R.id.note_list);
                 lv.setAdapter(new CustomListAdapter(this, Course.sortList(course.getNoteList()) , this , courseName));
 
@@ -161,31 +148,5 @@ public class NoteListDisplay extends AppCompatActivity {
         }
     }
 
-    public void writeFiles() throws IOException {
-
-        try {
-            /* We have to use the openFileOutput()-method
-             * the ActivityContext provides, to
-             * protect your file from others and
-             * This is done for security-reasons.
-             * We chose MODE_WORLD_READABLE, because
-             *  we have nothing to hide in our file */
-            FileOutputStream fOut = openFileOutput("test.ser",
-                    MODE_PRIVATE);
-            ObjectOutputStream osw = new ObjectOutputStream(fOut);
-
-            // Write the string to the file
-            osw.writeObject(course);
-
-            /* ensure that everything is
-             * really written out and close */
-            osw.flush();
-            osw.close();
-
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
-    }
 }
 

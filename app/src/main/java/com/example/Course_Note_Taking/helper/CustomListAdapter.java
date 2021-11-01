@@ -86,7 +86,7 @@ public class CustomListAdapter extends BaseAdapter {
                 Intent intent = new Intent(activity , NoteEditing.class);
                 intent.putExtra("noteTitle" ,  holder.shortText.getText().toString());
                 intent.putExtra("courseName" , courseName);
-                activity.startActivityForResult(intent , 200);
+                activity.startActivityForResult(intent , 100);
 
             }
         });
