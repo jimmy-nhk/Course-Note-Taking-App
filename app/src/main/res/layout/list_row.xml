@@ -1,29 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="5dip"
-    android:paddingTop="20sp">
+    android:orientation="vertical"
+    android:padding="5dip">
 
-    <TextView
-        android:id="@+id/shortText"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingTop="2dp"
-        android:text="Hello there, I am "
-        android:textSize="17dp"
-        android:textStyle="bold" />
+        android:weightSum="11">
 
-    <TextView
-        android:id="@+id/dateText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/shortText"
-        android:layout_alignBottom="@+id/shortText"
-        android:layout_alignParentRight="true"
-        android:text="Date Hello therererere"
-        android:textColor="#343434"
-        android:textSize="14dp" />
-</RelativeLayout>
+        <CheckBox
+            android:id="@+id/deleteCheckbox"
+            android:layout_width="25dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <TextView
+            android:id="@+id/shortText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingTop="2dp"
+            android:text="Hello there, I am "
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            />
+
+        <TextView
+            android:id="@+id/dateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/shortText"
+            android:layout_alignBottom="@+id/shortText"
+            android:layout_alignParentRight="true"
+            android:layout_weight="1"
+            android:text="Date Hello therererere"
+            android:textColor="#343434"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</LinearLayout>

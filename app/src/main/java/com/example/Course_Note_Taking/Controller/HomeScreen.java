@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 public class HomeScreen extends AppCompatActivity {
 
+    // Initialize the buttons for switching the activities
     private Button buttonAndroid, buttonArchitecture , buttonEngineering;
 
     @Override
@@ -34,6 +35,7 @@ public class HomeScreen extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(HomeScreen.this , NoteListDisplay.class);
                 intent.putExtra("course" , "ANDROID");
+                // start activity
                 startActivity(intent );
 
             }
@@ -42,13 +44,14 @@ public class HomeScreen extends AppCompatActivity {
 
         buttonArchitecture = findViewById(R.id.architectureBtn);
 
-        //Set event handler
+        //Set event handler for architecture course
         buttonArchitecture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomeScreen.this , NoteListDisplay.class);
                 intent.putExtra("course" , "ARCHITECTURE AND DESIGN");
 
+                // start activity
                 startActivity(intent);
             }
         });
@@ -56,7 +59,7 @@ public class HomeScreen extends AppCompatActivity {
 
         buttonEngineering = findViewById(R.id.engineerDesignBtn);
 
-        //Set event handler
+        //Set event handler for engineering course
         buttonEngineering.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.Course_Note_Taking.Controller.HomeScreen;
 import com.example.Course_Note_Taking.Controller.NoteEditing;
 import com.example.Course_Note_Taking.Controller.NoteListDisplay;
+import com.example.Course_Note_Taking.Model.Course;
 import com.example.Course_Note_Taking.Model.Note;
 import com.example.Course_Note_Taking.R;
 
@@ -53,7 +55,7 @@ public class CustomListAdapter extends BaseAdapter {
     static class ViewHolder {
         TextView shortText;
         TextView date;
-
+        CheckBox isDeleted;
     }
 
     @Override
@@ -67,6 +69,7 @@ public class CustomListAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.shortText  = (TextView) convertView.findViewById(R.id.shortText);
             holder.date  = (TextView) convertView.findViewById(R.id.dateText);
+            holder.isDeleted = (CheckBox) convertView.findViewById(R.id.deleteCheckbox);
 
 
             convertView.setTag(holder);
@@ -76,8 +79,27 @@ public class CustomListAdapter extends BaseAdapter {
 
         }
 
+        holder.isDeleted.setChecked(false);
         holder.shortText.setText(noteLists.get(position).getNoteName());
         holder.date.setText(filterDate(noteLists.get(position).getDateEdited().toString()));
+
+        holder.isDeleted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean checked = ((CheckBox) v).isChecked();
+
+                NoteListDisplay noteListDisplay = (NoteListDisplay) activity;
+
+
+                if (checked)
+                    noteListDisplay.getCourse().getNoteBasedOnTitle(holder.shortText.getText().toString()).setDelete(true);
+//                    noteLists.get(position).setDelete(true);
+                else
+//                    noteLists.get(position).setDelete(false);
+                    noteListDisplay.getCourse().getNoteBasedOnTitle(holder.shortText.getText().toString()).setDelete(true);
+
+            }
+        });
 
         holder.date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,10 +119,19 @@ public class CustomListAdapter extends BaseAdapter {
 
         char [] filterString = new char[rawString.length()];
 
+        int countColon = 0;
+
         for (int i = 0 ; i < rawString.length(); i++){
 
-            if(rawString.charAt(i) == '.'){
-                return String.valueOf(filterString);
+            if (rawString.charAt(i) == 'T'){
+                filterString[i] = ' ';
+                continue;
+            }
+
+            if(rawString.charAt(i) == ':'){
+                countColon++;
+                if (countColon == 2)
+                    return String.valueOf(filterString);
             }
 
             filterString[i] = rawString.charAt(i);

@@ -15,8 +15,20 @@ public class Note implements Serializable , Comparable {
     private String noteName;
     private LocalDateTime dateEdited;
     private String content;
+    private boolean isDelete;
 
 
+    public Note() {
+        this.isDelete = false;
+    }
+
+    public boolean isDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(boolean delete) {
+        isDelete = delete;
+    }
 
     public String getNoteName() {
         return noteName;

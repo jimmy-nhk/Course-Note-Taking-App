@@ -35,9 +35,13 @@ public class NoteListDisplay extends AppCompatActivity {
 
     private TextView courseText ;
     private String courseName;
-    private Button backBtn ,addNoteBtn;
+    private Button backBtn ,addNoteBtn , deleteBtn;
     private Course course;
     private final int SENDING_CODE_FROM_NOTE_LIST = 100;
+
+    public Course getCourse() {
+        return course;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +91,72 @@ public class NoteListDisplay extends AppCompatActivity {
                 startActivityForResult(intent1 , SENDING_CODE_FROM_NOTE_LIST);
             }
         });
+
+        deleteBtn = (Button) findViewById(R.id.deleteBtn);
+        deleteBtn.setOnClickListener(v -> {
+
+            // Checked for any change
+            boolean checkedIfChanged = false;
+
+            for (int i = 0 ; i < course.getNoteList().size() ; i++){
+
+                if (course.getNoteList().get(i).isDelete() == true){
+                    checkedIfChanged = true;
+                    course.getNoteList().remove(i);
+                }
+            }
+
+            if (checkedIfChanged){
+
+                try {
+                    writeFiles();
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
+
+                lv.setAdapter(new CustomListAdapter(this, Course.sortList(course.getNoteList()) , this , courseName));
+
+            }
+
+
+        });
+
+    }
+
+    // write files
+    public void writeFiles() throws IOException {
+
+        try {
+
+            String fileName;
+            switch (courseName){
+                case "ANDROID":
+                    fileName = "android.ser";
+                    break;
+                case "ARCHITECTURE AND DESIGN":
+                    fileName = "architecture.ser";
+                    break;
+                default:
+                    fileName = "engineering.ser";
+
+            }
+            FileOutputStream fOut = openFileOutput(fileName,
+                    MODE_PRIVATE);
+            ObjectOutputStream osw = new ObjectOutputStream(fOut);
+
+
+            // Write the string to the file
+            osw.writeObject(course);
+
+
+            /* ensure that everything is
+             * really written out and close */
+            osw.flush();
+            osw.close();
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 

@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Course Note Taking</string>
     <string name="course_note_taking">Course Note Taking</string>
 </resources>
