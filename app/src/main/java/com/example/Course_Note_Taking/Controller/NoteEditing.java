@@ -116,7 +116,6 @@ public class NoteEditing extends AppCompatActivity {
                     }
 
 
-
                     // Check if the title is already existed among the course.
                     if (course.checkNoteTitleExists(titleText.getText().toString())) {
 

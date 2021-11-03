@@ -1,47 +1,35 @@
 package com.example.Course_Note_Taking.Controller;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.Course_Note_Taking.Model.Course;
-import com.example.Course_Note_Taking.Model.Note;
 import com.example.Course_Note_Taking.R;
 import com.example.Course_Note_Taking.helper.CustomListAdapter;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 
 public class NoteListDisplay extends AppCompatActivity {
 
+    // define the needed variables
     private TextView courseText ;
     private String courseName;
     private Button backBtn ,addNoteBtn , deleteBtn;
     private Course course;
     private final int SENDING_CODE_FROM_NOTE_LIST = 100;
-
-    public Course getCourse() {
-        return course;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +51,7 @@ public class NoteListDisplay extends AppCompatActivity {
         readFiles();
 
         final ListView lv = (ListView) findViewById(R.id.note_list);
-        lv.setAdapter(new CustomListAdapter(this, Course.sortList(course.getNoteList()) , this , courseName));
+        lv.setAdapter(new CustomListAdapter(this, course.getNoteList() , this , courseName));
 
 
         // Set the back button
@@ -98,14 +86,20 @@ public class NoteListDisplay extends AppCompatActivity {
             // Checked for any change
             boolean checkedIfChanged = false;
 
-            for (int i = 0 ; i < course.getNoteList().size() ; i++){
+
+            // Reversely update index in arraylist
+            for (int i = course.getNoteList().size() - 1 ; i >= 0  ; i--){
+
 
                 if (course.getNoteList().get(i).isDelete() == true){
+
                     checkedIfChanged = true;
                     course.getNoteList().remove(i);
                 }
+
             }
 
+            // If change occurs, the writefiles function will be executed and view will be updated
             if (checkedIfChanged){
 
                 try {
@@ -120,6 +114,8 @@ public class NoteListDisplay extends AppCompatActivity {
 
 
         });
+
+
 
     }
 
@@ -146,6 +142,7 @@ public class NoteListDisplay extends AppCompatActivity {
 
 
             // Write the string to the file
+            Collections.sort(course.getNoteList());
             osw.writeObject(course);
 
 
@@ -188,6 +185,7 @@ public class NoteListDisplay extends AppCompatActivity {
             isr.close();
             fIn.close();
 
+            Collections.sort(course.getNoteList());
 
         } catch (IOException | ClassNotFoundException exception) {
             exception.printStackTrace();
@@ -210,13 +208,17 @@ public class NoteListDisplay extends AppCompatActivity {
                 // Load the data based on the course
                 readFiles();
 
+
                 // update the list
                 final ListView lv =  findViewById(R.id.note_list);
-                lv.setAdapter(new CustomListAdapter(this, Course.sortList(course.getNoteList()) , this , courseName));
+                lv.setAdapter(new CustomListAdapter(this, course.getNoteList() , this , courseName));
 
             }
         }
     }
 
+    public Course getCourse() {
+        return course;
+    }
 }
 

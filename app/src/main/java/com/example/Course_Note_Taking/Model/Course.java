@@ -29,8 +29,6 @@ public class Course implements Serializable {
         this.noteList = new ArrayList<>();
 
 
-//        populateDataBasedOnCourse(courseName);
-
     }
 
     public static ArrayList<Note> sortList(ArrayList<Note> noteList){
@@ -68,51 +66,6 @@ public class Course implements Serializable {
         return false;
     }
 
-
-    public void populateDataBasedOnCourse(String courseName){
-
-
-        if(courseName.equals("ANDROID")){
-
-            for (int i = 0 ; i < 4 ; i++){
-                Note note1 = new Note();
-                note1.setNoteName("Android First Note " + i);
-                note1.setContent("Hello there");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    note1.setDateEdited(LocalDateTime.now());
-                }
-
-                noteList.add(note1);
-            }
-
-
-            return;
-        }
-        else if (courseName.equals("ARCHITECTURE AND DESIGN")){
-
-
-            Note note1 = new Note();
-            note1.setNoteName("Architecture First Note");
-            note1.setContent("Hello Here");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                note1.setDateEdited(LocalDateTime.now());
-            }
-
-            noteList.add(note1);
-            return;
-        }
-        else {
-            Note note1 = new Note();
-            note1.setNoteName("Engineering First Note");
-            note1.setContent("Hello ReactJs");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                note1.setDateEdited(LocalDateTime.now());
-            }
-
-            noteList.add(note1);
-            return;
-        }
-    }
 
     public String getCourseName() {
         return courseName;
