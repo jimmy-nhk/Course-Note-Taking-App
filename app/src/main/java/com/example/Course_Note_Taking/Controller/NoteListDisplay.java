@@ -39,7 +39,6 @@ public class NoteListDisplay extends AppCompatActivity {
         // Get the name of the course
         Intent intent = getIntent();
         courseName = intent.getExtras().get("course").toString();
-        Toast.makeText(NoteListDisplay.this, courseName, Toast.LENGTH_SHORT).show();
 
         courseText = findViewById(R.id.courseDisplay);
         courseText.setText(courseName);
@@ -91,7 +90,7 @@ public class NoteListDisplay extends AppCompatActivity {
             for (int i = course.getNoteList().size() - 1 ; i >= 0  ; i--){
 
 
-                if (course.getNoteList().get(i).isDelete() == true){
+                if (course.getNoteList().get(i).isDelete()){
 
                     checkedIfChanged = true;
                     course.getNoteList().remove(i);

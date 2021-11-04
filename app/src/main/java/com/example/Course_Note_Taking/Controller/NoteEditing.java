@@ -33,6 +33,7 @@ import java.util.ArrayList;
 
 public class NoteEditing extends AppCompatActivity {
 
+    // initialize the attributes
     private Button backListBtn;
     private EditText titleText, mainNoteText;
     private Note note;
@@ -68,7 +69,6 @@ public class NoteEditing extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 titleAfterChanged = s.toString();
-                Toast.makeText(NoteEditing.this, titleAfterChanged, Toast.LENGTH_SHORT).show();
 
             }
 
@@ -85,6 +85,7 @@ public class NoteEditing extends AppCompatActivity {
         // Create the course
         course = new Course(courseName);
 
+        // read files
         readFiles();
 
 
