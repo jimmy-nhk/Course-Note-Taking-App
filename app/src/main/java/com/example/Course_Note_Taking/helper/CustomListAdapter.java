@@ -111,7 +111,7 @@ public class CustomListAdapter extends BaseAdapter {
                     // set the delete to true
                     noteListDisplay.getCourse().getNoteBasedOnTitle(holder.shortText.getText().toString()).setDelete(true);
                 else // set the delete to false
-                    noteListDisplay.getCourse().getNoteBasedOnTitle(holder.shortText.getText().toString()).setDelete(true);
+                    noteListDisplay.getCourse().getNoteBasedOnTitle(holder.shortText.getText().toString()).setDelete(false);
 
             }
         });
